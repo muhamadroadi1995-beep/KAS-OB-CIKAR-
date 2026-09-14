@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User View (Read-Only)</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 40px;
+        background-color: #f4f4f9;
+      }
+      .card {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        max-width: 400px;
+      }
+      .status {
+        font-size: 1.5em;
+        color: #2c3e50;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h2>Halaman User (Read-Only)</h2>
+      <p>Status Terkini:</p>
+      <p class="status" id="statusDisplay">Memuat data...</p>
+      <p>
+        <small>Terakhir diubah oleh: <span id="authorDisplay">-</span></small>
+      </p>
+    </div>
+
+    <script>
+      const socket = io();
+
+      socket.on("init_data", updateUI);
+      socket.on("data_updated", updateUI);
+
+      function updateUI(data) {
+        document.getElementById("statusDisplay").innerText = data.status;
+        document.getElementById("authorDisplay").innerText = data.lastUpdatedBy;
+      }
+    </script>
+  </body>
+</html>
